@@ -28,15 +28,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <RegulatoryHeader />
       
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Document Upload Section */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Document Upload</h2>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 backdrop-blur-sm bg-white/90">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
+                <h2 className="text-xl font-semibold text-gray-900">Document Upload</h2>
+              </div>
               <DocumentUpload 
                 onDocumentUpload={handleDocumentUpload}
                 documents={documents}

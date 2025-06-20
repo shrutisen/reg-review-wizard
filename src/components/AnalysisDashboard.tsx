@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ComplianceAnalysis } from '@/components/ComplianceAnalysis';
 import { RiskAssessment } from '@/components/RiskAssessment';
@@ -7,7 +6,7 @@ import { RegulatoryReferences } from '@/components/RegulatoryReferences';
 import { UploadedDocument } from '@/pages/Index';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, AlertTriangle, CheckCircle, BookOpen } from 'lucide-react';
+import { FileText, AlertTriangle, CheckCircle, BookOpen, Sparkles } from 'lucide-react';
 
 interface AnalysisDashboardProps {
   selectedDocument: UploadedDocument | null;
@@ -42,11 +41,13 @@ export const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({
 
   if (!selectedDocument) {
     return (
-      <Card className="h-96 flex items-center justify-center">
+      <Card className="h-96 flex items-center justify-center bg-gradient-to-br from-white to-gray-50 border-0 shadow-lg rounded-xl">
         <CardContent className="text-center">
-          <FileText className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No Document Selected</h3>
-          <p className="text-gray-500">Upload and select a document to begin regulatory analysis</p>
+          <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <FileText className="h-10 w-10 text-blue-600" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">Ready for Analysis</h3>
+          <p className="text-gray-600 max-w-md">Upload and select a regulatory document to begin comprehensive FDA compliance analysis</p>
         </CardContent>
       </Card>
     );
@@ -54,16 +55,40 @@ export const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({
 
   if (isLoading || selectedDocument.analysisStatus === 'analyzing') {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Analyzing Document: {selectedDocument.name}</CardTitle>
+      <Card className="bg-gradient-to-br from-white to-blue-50 border-0 shadow-lg rounded-xl">
+        <CardHeader className="text-center pb-2">
+          <CardTitle className="text-xl font-semibold flex items-center justify-center space-x-2">
+            <Sparkles className="h-5 w-5 text-blue-600" />
+            <span>Analyzing: {selectedDocument.name}</span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Performing comprehensive regulatory analysis...</p>
-              <p className="text-sm text-gray-500 mt-2">This may take a few minutes</p>
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="relative mb-8">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                <div className="animate-spin rounded-full h-10 w-10 border-3 border-white border-t-transparent"></div>
+              </div>
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                <CheckCircle className="h-4 w-4 text-white" />
+              </div>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Comprehensive Analysis in Progress</h3>
+            <p className="text-gray-600 text-center mb-4">
+              Our AI is reviewing your document against FDA regulations and industry standards
+            </p>
+            <div className="flex items-center space-x-6 text-sm text-gray-500">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span>21 CFR Compliance</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span>Risk Assessment</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <span>Expert Review</span>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -73,30 +98,47 @@ export const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="bg-gradient-to-r from-white to-blue-50 border-0 shadow-lg rounded-xl">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <FileText className="h-5 w-5" />
-            <span>Analysis Results: {selectedDocument.name}</span>
+          <CardTitle className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+              <CheckCircle className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <span className="text-xl text-gray-900">Analysis Complete</span>
+              <p className="text-sm text-gray-600 font-normal mt-1">{selectedDocument.name}</p>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="compliance" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="compliance" className="flex items-center space-x-2">
+            <TabsList className="grid w-full grid-cols-4 bg-gray-100 p-1 rounded-lg">
+              <TabsTrigger 
+                value="compliance" 
+                className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
                 <CheckCircle className="h-4 w-4" />
                 <span>Compliance</span>
               </TabsTrigger>
-              <TabsTrigger value="risk" className="flex items-center space-x-2">
+              <TabsTrigger 
+                value="risk" 
+                className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
                 <AlertTriangle className="h-4 w-4" />
-                <span>Risk Assessment</span>
+                <span>Risk</span>
               </TabsTrigger>
-              <TabsTrigger value="recommendations" className="flex items-center space-x-2">
-                <BookOpen className="h-4 w-4" />
+              <TabsTrigger 
+                value="recommendations" 
+                className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
+                <Sparkles className="h-4 w-4" />
                 <span>Recommendations</span>
               </TabsTrigger>
-              <TabsTrigger value="references" className="flex items-center space-x-2">
-                <FileText className="h-4 w-4" />
+              <TabsTrigger 
+                value="references" 
+                className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
+                <BookOpen className="h-4 w-4" />
                 <span>References</span>
               </TabsTrigger>
             </TabsList>
