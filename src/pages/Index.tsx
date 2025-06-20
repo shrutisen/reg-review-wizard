@@ -1,11 +1,58 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import { DocumentUpload } from '@/components/DocumentUpload';
+import { AnalysisDashboard } from '@/components/AnalysisDashboard';
+import { RegulatoryHeader } from '@/components/RegulatoryHeader';
+import { useState } from 'react';
+
+export interface UploadedDocument {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  uploadDate: Date;
+  analysisStatus: 'pending' | 'analyzing' | 'complete' | 'error';
+  analysisResults?: any;
+}
 
 const Index = () => {
+  const [documents, setDocuments] = useState<UploadedDocument[]>([]);
+  const [selectedDocument, setSelectedDocument] = useState<UploadedDocument | null>(null);
+
+  const handleDocumentUpload = (newDocument: UploadedDocument) => {
+    setDocuments(prev => [...prev, newDocument]);
+  };
+
+  const handleDocumentSelect = (document: UploadedDocument) => {
+    setSelectedDocument(document);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gray-50">
+      <RegulatoryHeader />
+      
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Document Upload Section */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Document Upload</h2>
+              <DocumentUpload 
+                onDocumentUpload={handleDocumentUpload}
+                documents={documents}
+                onDocumentSelect={handleDocumentSelect}
+              />
+            </div>
+          </div>
+
+          {/* Analysis Dashboard */}
+          <div className="lg:col-span-2">
+            <AnalysisDashboard 
+              selectedDocument={selectedDocument}
+              documents={documents}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
